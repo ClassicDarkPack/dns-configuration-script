@@ -29,12 +29,13 @@ Follow these steps to download and execute the script:
    ./set-dns.sh
    ```
 ### Script Details
-The script performs the following actions:
+1. Sets DNS servers in `/etc/systemd/resolved.conf`.
+2. Removes the existing `/etc/resolv.conf` file.
+3. Creates a new `/etc/resolv.conf` file with the specified DNS servers.
+4. Locks the `/etc/resolv.conf` file to prevent changes.
+5. Restarts `NetworkManager`, `systemd-resolved`, and `resolvconf` services to apply t
 
-1.Sets DNS servers in /etc/systemd/resolved.conf
-2.Removes the existing /etc/resolv.conf file
-3.Creates a new /etc/resolv.conf file with the specified DNS servers
-4.Locks the /etc/resolv.conf file to prevent changes
-5.Restarts NetworkManager, systemd-resolved, and resolvconf services to apply the changes
+
+
 
 
