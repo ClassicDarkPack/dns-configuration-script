@@ -1,20 +1,14 @@
-# dns-configuration-script
-set-dns
+# DNS Configuration Script
 
-دانلود اسکریپت با curl و اجرا:
+This script configures the DNS settings for your system. It updates the DNS servers and ensures that the configuration remains persistent by locking the `/etc/resolv.conf` file.
 
-sh
-Copy code
-curl -O https://raw.githubusercontent.com/ClassicDarkPack/dns-configuration-script/main/set-dns.sh
-chmod +x set-dns.sh
-./set-dns.sh
-دانلود اسکریپت با wget و اجرا:
+## How to Use
 
-sh
-Copy code
-wget https://raw.githubusercontent.com/ClassicDarkPack/dns-configuration-script/main/set-dns.sh
-chmod +x set-dns.sh
-./set-dns.sh
-در هر دو روش، ابتدا اسکریپت set-dns.sh را دانلود کرده و سپس با دستور chmod +x به آن اجازه اجرایی می‌دهید و در نهایت آن را اجرا می‌کنید.
+Follow these steps to download and execute the script:
 
-این دستورات را می‌توانید در ترمینال خود اجرا کنید. توجه داشته باشید که برای اجرای این اسکریپت نیاز به دسترسی‌های مدیریتی (sudo) دارید، بنابراین در صورت نیاز، باید پسورد خود را وارد کنید.
+### Download and Execute with `curl`
+
+1. Open your terminal.
+2. Download the script:
+   ```sh
+   curl -O https://raw.githubusercontent.com/ClassicDarkPack/dns-configuration-script/main/set-dns.sh
