@@ -4,7 +4,7 @@
 echo "Setting DNS servers in /etc/systemd/resolved.conf"
 sudo bash -c 'cat << EOF > /etc/systemd/resolved.conf
 [Resolve]
-DNS=1.1.1.1 1.0.0.1
+DNS=8.8.8.8 8.8.4.4
 EOF'
 
 # حذف فایل /etc/resolv.conf
@@ -14,8 +14,8 @@ sudo rm /etc/resolv.conf
 # ایجاد فایل /etc/resolv.conf با DNS سرورهای جدید
 echo "Creating /etc/resolv.conf with new DNS servers"
 sudo bash -c 'cat << EOF > /etc/resolv.conf
-nameserver 1.1.1.1
-nameserver 1.0.0.1
+nameserver 8.8.8.8
+nameserver 8.8.4.4
 EOF'
 
 # قفل کردن فایل /etc/resolv.conf برای جلوگیری از تغییرات
