@@ -4,32 +4,28 @@
 read -p "Enter primary DNS server (e.g., 8.8.8.8): " dns1
 read -p "Enter secondary DNS server (e.g., 8.8.4.4): " dns2
 
-# تنظیم DNS سرورها در فایل resolved.conf
-echo "Setting DNS servers in /etc/systemd/resolved.conf"
-sudo bash -c "cat << EOF > /etc/systemd/resolved.conf
-[Resolve]
-DNS=$dns1 $dns2
-EOF"
+# باز کردن قفل فایل resolv.conf اگر قفل شده باشد
+if lsattr /etc/resolv.conf | grep -q '\-i\-'; then
+    echo "Unlocking /etc/resolv.conf"
+    sudo chattr -i /etc/resolv.conf
+fi
 
-# حذف فایل /etc/resolv.conf
-echo "Removing /etc/resolv.conf"
+# تنظیم DNS در فایل systemd-resolved
+echo "Updating /etc/systemd/resolved.conf"
+sudo sed -i '/^DNS=/d' /etc/systemd/resolved.conf
+sudo sed -i '/^\[Resolve\]/a DNS='${dns1}' '${dns2}'' /etc/systemd/resolved.conf
+
+# حذف فایل resolv.conf و ایجاد symlink به systemd-resolved
+echo "Re-linking /etc/resolv.conf to /run/systemd/resolve/stub-resolv.conf"
 sudo rm -f /etc/resolv.conf
+sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
-# ایجاد فایل /etc/resolv.conf با DNS سرورهای جدید
-echo "Creating /etc/resolv.conf with new DNS servers"
-sudo bash -c "cat << EOF > /etc/resolv.conf
-nameserver $dns1
-nameserver $dns2
-EOF"
+# راه‌اندازی مجدد سرویس‌ها
+echo "Restarting systemd-resolved"
+sudo systemctl restart systemd-resolved
 
-# قفل کردن فایل /etc/resolv.conf برای جلوگیری از تغییرات
-echo "Locking /etc/resolv.conf to prevent changes"
-sudo chattr +i /etc/resolv.conf
+# بررسی فعال بودن systemd-resolved
+echo "Enabling systemd-resolved"
+sudo systemctl enable systemd-resolved
 
-# راه‌اندازی مجدد سرویس‌های شبکه و resolved
-echo "Restarting NetworkManager, systemd-resolved, and resolvconf services"
-sudo systemctl restart NetworkManager
-sudo systemctl restart systemd-resolved.service
-sudo systemctl restart resolvconf.service
-
-echo "DNS configuration is complete with DNS servers: $dns1 and $dns2"
+echo "DNS configuration completed successfully: $dns1 and $dns2"
