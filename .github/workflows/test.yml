@@ -1,0 +1,13 @@
+name: Shell validation
+on:
+  push:
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bash syntax and CLI tests
+        run: bash tests/test-cli.sh
